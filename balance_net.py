@@ -90,7 +90,7 @@ if __name__=='__main__':
     preds = Dense(8, activation='softmax')(l_dense)
 
     model = Model(sequence_input, preds)
-    model.compile(loss='categorical_crossentropy',optimizer=optimizers.Adam(learning_rate=0.001),metrics=['acc'])
+    model.compile(loss='categorical_crossentropy',optimizer=optimizers.Adam(),metrics=['acc'])
 
     model_checkpoints = callbacks.ModelCheckpoint("checkpoint-{val_loss:.3f}.h5", monitor='val_loss', verbose=0, save_best_only=True, save_weights_only=False, mode='auto', period=0)
 
