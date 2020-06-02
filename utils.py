@@ -8,9 +8,7 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.stem import PorterStemmer
-# nltk.download('punkt')
 # nltk.download('stopwords')
-# nltk.download('wordnet')
 
 def preprocessing(text):
     # tokenize into words
