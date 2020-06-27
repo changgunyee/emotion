@@ -6,7 +6,7 @@ from keras import optimizers,callbacks
 from preprocessor import preprocess,model_tokenizer,cal_max_length
 
 def create_embedding_matrix(filepath, word_index, embedding_dim):
-    vocab_size = len(word_index) + 1  # Adding again 1 because of reserved 0 index
+    vocab_size = len(word_index) + 1  # Adding again 1 bsecause of reserved 0 index
     embedding_matrix = np.zeros((vocab_size, embedding_dim))
 
     with open(filepath,'r',encoding='utf8') as f:
@@ -18,12 +18,12 @@ def create_embedding_matrix(filepath, word_index, embedding_dim):
 
     return embedding_matrix
 
-def create_embedding_layer(seq_input,input_dim,embedding_dim,embedding_mat,max_word_length,trainable):
+def create_embedding_layer(seq_input,input_dim,embedding_dim,embedding_mat,max_seq_len,trainable):
     # static channel
     embedding_layer= Embedding(input_dim,
                                 embedding_dim,
                                 weights=[embedding_mat],
-                                input_length=max_word_length,
+                                input_length=max_seq_len,
                                 trainable=trainable)
 
     embedded_sequences= embedding_layer(seq_input)
@@ -62,19 +62,18 @@ if __name__=='__main__':
     labels_train+=labels_dev
 
     utters=utters_train + utters_test
-    max_word_length = cal_max_length(utters)
-    tokenizer = model_tokenizer(utters,max_word_length)
+    max_seq_word_length = cal_max_length(utters)
+    tokenizer = model_tokenizer(utters)
     vocab_size = len(tokenizer.word_index) + 1
-
-    x_train,y_train,x_test,y_test=preprocess(utters_train,labels_train,utters_test,labels_test,tokenizer)
+    x_train, y_train, x_test, y_test,max_seq_len = preprocess(utters_train, labels_train, utters_test, labels_test, tokenizer)
 
     model=Sequential()
     embedding_dim = 300
     embedding_matrix = create_embedding_matrix('./glove.42B.300d.txt',tokenizer.word_index, embedding_dim)
 
-    sequence_input = Input(shape=(max_word_length,), dtype='int32')
-    embedded_sequences_frozen = create_embedding_layer(sequence_input, vocab_size,embedding_dim,embedding_matrix,max_word_length,False)
-    embedded_sequences_train = create_embedding_layer(sequence_input, vocab_size,embedding_dim,embedding_matrix,max_word_length,False)
+    sequence_input = Input(shape=(max_seq_len,), dtype='int32')
+    embedded_sequences_frozen = create_embedding_layer(sequence_input, vocab_size, embedding_dim, embedding_matrix, max_seq_len, False)
+    embedded_sequences_train = create_embedding_layer(sequence_input, vocab_size, embedding_dim, embedding_matrix, max_seq_len, True)
 
     conv_props = {'kernel_sizes': [2,3,5,6,8], 'filters': 24}
     l_c_lstm = create_lstm_to_cnn(embedded_sequences_frozen, embedded_sequences_train, conv_props)
@@ -90,7 +89,8 @@ if __name__=='__main__':
     preds = Dense(8, activation='softmax')(l_dense)
 
     model = Model(sequence_input, preds)
-    model.compile(loss='categorical_crossentropy',optimizer=optimizers.Adam(),metrics=['acc'])
+    adadelta = optimizers.Adadelta(lr=0.9, rho=0.95, epsilon=None, decay=0.002)
+    model.compile(loss='categorical_crossentropy',optimizer=adadelta,metrics=['acc'])
 
     model_checkpoints = callbacks.ModelCheckpoint("checkpoint-{val_loss:.3f}.h5", monitor='val_loss', verbose=0, save_best_only=True, save_weights_only=False, mode='auto', period=0)
 
@@ -100,7 +100,7 @@ if __name__=='__main__':
     print("Training Progress:")
     model_log = model.fit(x_train, y_train,
                           validation_data=(x_test, y_test),
-                          epochs=10,
+                          epochs=50,
                           batch_size=128,
                           verbose=True,
                           callbacks=[model_checkpoints])

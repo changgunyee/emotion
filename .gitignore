@@ -4,3 +4,5 @@ __pycache__
 tutorial.py
 temp.py
 EmotionLines
+glove.42B.300d.txt
+checkpoint-*

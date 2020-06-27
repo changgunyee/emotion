@@ -1,4 +1,3 @@
-import numpy as np
 import json
 import re
 import csv
@@ -8,7 +7,9 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.stem import PorterStemmer
-# nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
 
 def preprocessing(text):
     # tokenize into words
@@ -105,6 +106,3 @@ def output_to_csv(filename,output):
         writer.writerow(['Id','Predicted'])
         for i in range(len(output)):
             writer.writerow([i,output[i]])
-
-if __name__ == '__main__':
-    output_to_csv(DATA_MAP['submission_output'],["a","b","c"])
