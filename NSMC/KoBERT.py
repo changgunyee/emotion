@@ -20,7 +20,7 @@ bertmodel, vocab = get_pytorch_kobert_model()
 
 dataset_train = nlp.data.TSVDataset("ratings_train.txt?dl=1", field_indices=[1,2], num_discard_samples=1)
 dataset_test = nlp.data.TSVDataset("ratings_test.txt?dl=1", field_indices=[1,2], num_discard_samples=1)
-dataset_keg = nlp.data.TSVDataset("nsmc/ko_data_no_index.csv", encoding='cp949', num_discard_samples=1)
+dataset_keg = nlp.data.TSVDataset("data/ko_data_no_index.csv", encoding='cp949', num_discard_samples=1)
 
 tokenizer = get_tokenizer()
 tok = nlp.data.BERTSPTokenizer(tokenizer, vocab, lower=False)
@@ -171,4 +171,4 @@ for batch_id, (token_ids, valid_length, segment_ids) in enumerate(tqdm_notebook(
     keg_label = predict_label(out)
     save = save + keg_label.tolist()
 
-pd.DataFrame(save).to_csv("nsmc/kobert_out.csv")
+pd.DataFrame(save).to_csv("data/kobert_out.csv")
