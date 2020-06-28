@@ -9,10 +9,10 @@ from tensorflow.keras.utils import multi_gpu_model
 import time
 
 
-train_data = pd.read_csv("nsmc/ratings_train.txt", sep='\t')
-test_data = pd.read_csv("nsmc/ratings_test.txt", sep='\t')
-sample_data = pd.read_csv("nsmc/ko_data.csv", encoding='cp949')
-sample_output = pd.read_csv("nsmc/ko_sample.csv")
+train_data = pd.read_csv("data/ratings_train.txt", sep='\t')
+test_data = pd.read_csv("data/ratings_test.txt", sep='\t')
+sample_data = pd.read_csv("data/ko_data.csv", encoding='cp949')
+sample_output = pd.read_csv("data/ko_sample.csv")
 
 train_data.drop_duplicates(subset=['document'], inplace=True)
 train_data['document'] = train_data['document'].str.replace("[^ㄱ-ㅎㅏ-ㅣ가-힣 ]","")
@@ -110,4 +110,4 @@ loaded_model = load_model('best_model.h5')
 print("\n test accuracy: %.5f" % (loaded_model.evaluate(X_test, y_test)[1]))
 
 predict_result = loaded_model.predict(X_sample)
-pd.DataFrame(predict_result).to_csv("nsmc/sample.csv")
+pd.DataFrame(predict_result).to_csv("data/sample.csv")
