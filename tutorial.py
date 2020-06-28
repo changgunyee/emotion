@@ -6,6 +6,8 @@ from keras import layers
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from keras.models import Model
+from preprocessor import *
+from utils import *
 
 def create_embedding_matrix(filepath, word_index, embedding_dim):
     vocab_size = len(word_index) + 1  # Adding again 1 because of reserved 0 index
@@ -21,29 +23,19 @@ def create_embedding_matrix(filepath, word_index, embedding_dim):
 
     return embedding_matrix
 
-utters_train,labels_train=load_dialogues(DATA_MAP['train'])
-utters_dev,labels_dev=load_dialogues(DATA_MAP['dev'])
-utters_test,labels_test=load_dialogues(DATA_MAP['test'])
-utters_train+=utters_dev
-labels_train+=labels_dev
 
-utters=utters_train+utters_test
-max_word_length= max([len(utter.split()) for utter in utters])
-max_seq_length=max([len(utter) for utter in utters])
-tokenizer=Tokenizer(num_words=10000)
-tokenizer.fit_on_texts(utters)
+utters_train, labels_train = load_dialogues(DATA_MAP['train'])
+utters_dev, labels_dev = load_dialogues(DATA_MAP['dev'])
+utters_test, labels_test = load_dialogues(DATA_MAP['test'])
+utters_train += utters_dev
+labels_train += labels_dev
+
+utters = utters_train + utters_test
+max_seq_word_length = cal_max_length(utters)
+tokenizer = model_tokenizer(utters)
 vocab_size = len(tokenizer.word_index) + 1
-
-x_train=tokenizer.texts_to_sequences(utters_train)
-x_test=tokenizer.texts_to_sequences(utters_test)
-
-x_train = pad_sequences(x_train, padding='post', maxlen=max_seq_length)
-x_test= pad_sequences(x_test, padding='post', maxlen=max_seq_length)
-
-
-y_train=map_label_to_idx(np.array(labels_train))
-y_test=map_label_to_idx(np.array(labels_test))
-
+x_train, y_train, x_test, y_test, max_seq_len = preprocess(utters_train, labels_train, utters_test, labels_test,
+                                                           tokenizer)
 
 input_dim=x_train.shape[1]
 model=Sequential()
@@ -52,11 +44,11 @@ embedding_matrix = create_embedding_matrix(
     './glove.42B.300d.txt',
     tokenizer.word_index, embedding_dim)
 
-seq_input = layers.Input(shape=(max_seq_length,), dtype='int32')
+seq_input = layers.Input(shape=(max_seq_len,), dtype='int32')
 seq_embedded=layers.Embedding(input_dim=vocab_size,
                            output_dim=embedding_dim,
                            weights=[embedding_matrix],
-                           input_length=max_seq_length,
+                           input_length=max_seq_len,
                            trainable=True)(seq_input)
 
 
@@ -77,7 +69,7 @@ model_output = layers.Dropout(0.2)(conv_merged)
 model_output=layers.Dense(10,input_dim=input_dim,activation='relu')(model_output)
 logits=layers.Dense(8,activation='softmax')(model_output)
 model = Model(seq_input, logits) #(입력,출력)
-model.compile(loss='binary_crossentropy',optimizer='adam',metrics=['accuracy'])
+model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
 
 history=model.fit(x_train,y_train,
                   epochs=10,
@@ -95,7 +87,7 @@ print("Test Accuracy: {:.4f}".format(accuracy))
 
 x_submission=load_csv_dialogues(DATA_MAP['submission_input'])
 x_submission=tokenizer.texts_to_sequences(x_submission)
-x_submission= pad_sequences(x_submission, padding='post', maxlen=max_seq_length)
+x_submission= pad_sequences(x_submission, padding='post', maxlen=max_seq_len)
 
 predictions=model.predict(x_submission)
 classe_idxs=np.argmax(predictions,axis=1)

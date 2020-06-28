@@ -75,7 +75,7 @@ if __name__=='__main__':
     embedded_sequences_frozen = create_embedding_layer(sequence_input, vocab_size, embedding_dim, embedding_matrix, max_seq_len, False)
     embedded_sequences_train = create_embedding_layer(sequence_input, vocab_size, embedding_dim, embedding_matrix, max_seq_len, True)
 
-    conv_props = {'kernel_sizes': [2,3,5,6,8], 'filters': 24}
+    conv_props = {'kernel_sizes': [2,3,4,5,6,7,8], 'filters': 24}
     l_c_lstm = create_lstm_to_cnn(embedded_sequences_frozen, embedded_sequences_train, conv_props)
 
     conv_props = {'kernel_sizes': [4, 3, 2], 'filters': 12}
@@ -89,8 +89,7 @@ if __name__=='__main__':
     preds = Dense(8, activation='softmax')(l_dense)
 
     model = Model(sequence_input, preds)
-    adadelta = optimizers.Adadelta(lr=0.9, rho=0.95, epsilon=None, decay=0.002)
-    model.compile(loss='categorical_crossentropy',optimizer=adadelta,metrics=['acc'])
+    model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
 
     model_checkpoints = callbacks.ModelCheckpoint("checkpoint-{val_loss:.3f}.h5", monitor='val_loss', verbose=0, save_best_only=True, save_weights_only=False, mode='auto', period=0)
 
