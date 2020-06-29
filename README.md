@@ -37,7 +37,7 @@ python3 EmotionLines/NSMC/KoBERT.py
 ```
 3. 예측 값이 저장된 NSMC/data/kobert_out.csv 파일을 열어 첫 행에 Id, Predicted를 입력합니다.
 
-#영어 감정 분석
+# 영어 감정 분석
 
 > Stanford NLP의 pretrained GloVe를 사용합니다 [링크](https://nlp.stanford.edu/projects/glove/)에서 glove.42B.300d.txt를 다운받아 루트 디렉토리에 넣어주세요 
 
