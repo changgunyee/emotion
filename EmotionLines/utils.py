@@ -47,7 +47,7 @@ def load_dialogues(filename):
         dialogues = json.loads(f.read())
         for dialogue in dialogues:
             for line in dialogue:
-                utterances.append(clean_str(line['utterance']))
+                utterances.append(preprocessing(line['utterance']))
                 labels.append(line['emotion'])
 
     return utterances, labels
@@ -58,7 +58,7 @@ def load_csv_dialogues(filename):
     with open(filename,encoding='CP949') as f:
         reader=csv.reader(f)
         for row in reader:
-            utterances.append(clean_str(row[4]))
+            utterances.append(preprocessing(row[4]))
 
     return utterances[1:]
 

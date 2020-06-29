@@ -89,7 +89,8 @@ if __name__=='__main__':
     preds = Dense(8, activation='softmax')(l_dense)
 
     model = Model(sequence_input, preds)
-    model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
+    adadelta = optimizers.Adadelta(lr=0.9, rho=0.95, epsilon=None, decay=0.002)
+    model.compile(loss='categorical_crossentropy', optimizer=adadelta, metrics=['acc'])
 
     model.summary()
     model.save('BalanceNet.h5')
