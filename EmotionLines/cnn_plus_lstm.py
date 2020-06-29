@@ -1,9 +1,9 @@
-from utils import *
+from EmotionLines.utils import *
 from keras.models import Sequential
 from keras.layers import *
 from keras.models import Model
 from keras import optimizers,callbacks
-from preprocessor import preprocess,model_tokenizer,cal_max_length
+from EmotionLines.preprocessor import preprocess,model_tokenizer,cal_max_length
 
 def create_embedding_matrix(filepath, word_index, embedding_dim):
     vocab_size = len(word_index) + 1  # Adding again 1 bsecause of reserved 0 index
@@ -69,7 +69,7 @@ if __name__=='__main__':
 
     model=Sequential()
     embedding_dim = 300
-    embedding_matrix = create_embedding_matrix('./glove.42B.300d.txt',tokenizer.word_index, embedding_dim)
+    embedding_matrix = create_embedding_matrix('glove.42B.300d.txt', tokenizer.word_index, embedding_dim)
 
     sequence_input = Input(shape=(max_seq_len,), dtype='int32')
     embedded_sequences_frozen = create_embedding_layer(sequence_input, vocab_size, embedding_dim, embedding_matrix, max_seq_len, False)

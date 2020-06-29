@@ -1,5 +1,5 @@
 import pytest
-from preprocessor import *
+from EmotionLines.preprocessor import *
 
 utters_train=["Oh my God, he\u0092s lost it. He\u0092s totally lost it.",
               "What?",

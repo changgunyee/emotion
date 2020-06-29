@@ -1,9 +1,9 @@
-from constants import *
-from utils import *
+from EmotionLines.constants import *
+from EmotionLines.utils import *
 from keras.preprocessing.sequence import pad_sequences
 import keras
 from keras.preprocessing.text import Tokenizer
-from preprocessor import preprocess,model_tokenizer,cal_max_length
+from EmotionLines.preprocessor import preprocess,model_tokenizer,cal_max_length
 
 
 model = keras.models.load_model('checkpoint-1.379.h5')

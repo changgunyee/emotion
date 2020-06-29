@@ -1,13 +1,13 @@
-from constants import *
-from utils import *
+from EmotionLines.constants import *
+from EmotionLines.utils import *
 import numpy as np
 from keras.models import Sequential
 from keras import layers
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from keras.models import Model
-from preprocessor import *
-from utils import *
+from EmotionLines.preprocessor import *
+from EmotionLines.utils import *
 
 def create_embedding_matrix(filepath, word_index, embedding_dim):
     vocab_size = len(word_index) + 1  # Adding again 1 because of reserved 0 index
@@ -41,7 +41,7 @@ input_dim=x_train.shape[1]
 model=Sequential()
 embedding_dim = 300
 embedding_matrix = create_embedding_matrix(
-    './glove.42B.300d.txt',
+    'glove.42B.300d.txt',
     tokenizer.word_index, embedding_dim)
 
 seq_input = layers.Input(shape=(max_seq_len,), dtype='int32')

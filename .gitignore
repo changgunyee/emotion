@@ -2,6 +2,5 @@
 logs
 __pycache__
 temp.py
-EmotionLines
-glove.42B.300d.txt
+EmotionLines/glove.42B.300d.txt
 checkpoint-*
