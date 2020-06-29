@@ -18,9 +18,9 @@ pip install -r requirements.txt #이후 다시 진행
 
 ### 실행방법
 1. NSMC/data 폴더에  ratings_train.txt, ratings_test.txt, ko_data.csv, sample.csv 파일을 다운로드 합니다.
-2. python3 EmotionLines/NSMC/NSMC.py 명령어로 모델 학습 및 예측을 합니다.
+2. python3 NSMC/NSMC.py 명령어로 모델 학습 및 예측을 합니다.
 ```python3
-python3 EmotionLines/NSMC/NSMC.py
+python3 NSMC/NSMC.py
 ```
 3. 예측 값이 저장된 NSMC/data/sample.csv 파일을 열어 첫 행에 Id, Predicted를 입력합니다.
 
@@ -31,9 +31,9 @@ python3 EmotionLines/NSMC/NSMC.py
 
 ### 실행방법
 1. NSMC/data 폴더에  ratings_train.txt, ratings_test.txt, ko_data_no_index.csv 파일을 다운로드 합니다.
-2. python3 EmotionLines/NSMC/KoBERT.py 명령어로 모델 학습 및 예측을 합니다.
+2. python3 NSMC/KoBERT.py 명령어로 모델 학습 및 예측을 합니다.
 ```python3
-python3 EmotionLines/NSMC/KoBERT.py
+python3 NSMC/KoBERT.py
 ```
 3. 예측 값이 저장된 NSMC/data/kobert_out.csv 파일을 열어 첫 행에 Id, Predicted를 입력합니다.
 
