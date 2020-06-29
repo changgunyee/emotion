@@ -1,6 +1,7 @@
 # 실행환경
+python3.6에서 진행하였습니다.
 ```python3
-virtualenv venv #
+virtualenv venv # 가상환경 설치
 source venv/bin/activate # 윈도우 가상환경 실행
 pip install git+https://git@github.com/SKTBrain/KoBERT.git@master
 pip install -r requirements.txt # 패키지 설치
