@@ -46,7 +46,7 @@ def load_dialogues(filename):
         dialogues = json.loads(f.read())
         for dialogue in dialogues:
             for line in dialogue:
-                utterances.append(clean_str(line['utterance']))
+                utterances.append(preprocessing(line['utterance']))
                 labels.append(line['emotion'])
 
     return utterances, labels
@@ -57,7 +57,7 @@ def load_csv_dialogues(filename):
     with open(filename,encoding='CP949') as f:
         reader=csv.reader(f)
         for row in reader:
-            utterances.append(clean_str(row[4]))
+            utterances.append(preprocessing(row[4]))
 
     return utterances[1:]
 
@@ -81,16 +81,25 @@ def plot_history(history):
     plt.title('Training and validation loss')
     plt.legend()
 
-def clean_str(string):
-    string = re.sub(r'[^\x00-\x7F]+', '', string)
+def clean_str(string, TREC=False):
+    """
+    Tokenization/string cleaning for all datasets except for SST.
+    Every dataset is lower cased except for TREC
+    """
     string = re.sub(r"[^A-Za-z0-9(),!?\'\`]", " ", string)
+    string = re.sub(r"\'s", " \'s", string)
+    string = re.sub(r"\'ve", " \'ve", string)
+    string = re.sub(r"n\'t", " n\'t", string)
+    string = re.sub(r"\'re", " \'re", string)
+    string = re.sub(r"\'d", " \'d", string)
+    string = re.sub(r"\'ll", " \'ll", string)
     string = re.sub(r",", " , ", string)
     string = re.sub(r"!", " ! ", string)
     string = re.sub(r"\(", " \( ", string)
     string = re.sub(r"\)", " \) ", string)
     string = re.sub(r"\?", " \? ", string)
     string = re.sub(r"\s{2,}", " ", string)
-    return string.strip()
+    return string.strip() if TREC else string.strip().lower()
 
 
 def map_label_to_idx(y:np.array)->np.array:

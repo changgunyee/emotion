@@ -72,7 +72,7 @@ model = Model(seq_input, logits) #(입력,출력)
 model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
 
 history=model.fit(x_train,y_train,
-                  epochs=10,
+                  epochs=40,
                   validation_data=(x_test,y_test),
                   batch_size=128)
 plot_history(history)

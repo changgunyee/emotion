@@ -91,8 +91,6 @@ if __name__=='__main__':
     model = Model(sequence_input, preds)
     model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
 
-    model_checkpoints = callbacks.ModelCheckpoint("checkpoint-{val_loss:.3f}.h5", monitor='val_loss', verbose=0, save_best_only=True, save_weights_only=False, mode='auto', period=0)
-
     model.summary()
     model.save('BalanceNet.h5')
 
@@ -101,6 +99,5 @@ if __name__=='__main__':
                           validation_data=(x_test, y_test),
                           epochs=50,
                           batch_size=128,
-                          verbose=True,
-                          callbacks=[model_checkpoints])
+                          verbose=True)
 
