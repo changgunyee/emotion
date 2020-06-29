@@ -1,13 +1,13 @@
-from EmotionLines.constants import *
-from EmotionLines.utils import *
+from constants import *
+from utils import *
 import numpy as np
 from keras.models import Sequential
 from keras import layers
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from keras.models import Model
-from EmotionLines.preprocessor import *
-from EmotionLines.utils import *
+from preprocessor import *
+from utils import *
 
 def create_embedding_matrix(filepath, word_index, embedding_dim):
     vocab_size = len(word_index) + 1  # Adding again 1 because of reserved 0 index

@@ -2,7 +2,7 @@ from keras import backend
 import tensorflow as tf
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
-from EmotionLines.utils import map_label_to_idx
+from utils import map_label_to_idx
 import numpy as np
 
 def set_core_to_use(num):

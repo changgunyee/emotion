@@ -1,9 +1,9 @@
-from EmotionLines.utils import *
+from utils import *
 from keras.models import Sequential
 from keras.layers import *
 from keras.models import Model
 from keras import optimizers,callbacks
-from EmotionLines.preprocessor import preprocess,model_tokenizer,cal_max_length
+from preprocessor import preprocess,model_tokenizer,cal_max_length
 
 def create_embedding_matrix(filepath, word_index, embedding_dim):
     vocab_size = len(word_index) + 1  # Adding again 1 bsecause of reserved 0 index
