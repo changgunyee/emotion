@@ -33,7 +33,7 @@ pip install -r requirements.txt #이후 다시 진행
 
 #영어 감정 분석
 
-> Stanford NLP의 pretrained GloVe를 사용합니다 [링크](https://nlp.stanford.edu/projects/glove/)에서 glove.42B.300d.txt를 다운받아 루트 에 넣어주세요 
+> Stanford NLP의 pretrained GloVe를 사용합니다 [링크](https://nlp.stanford.edu/projects/glove/)에서 glove.42B.300d.txt를 다운받아 루트 디렉토리에 넣어주세요 
 
 ## 실행 방법
 ### 기본 CNN모델
