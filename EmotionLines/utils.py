@@ -2,14 +2,43 @@ import json
 import re
 import csv
 import matplotlib.pyplot as plt
-from EmotionLines.constants import *
+from constants import *
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
+import numpy as np
 from nltk.stem import PorterStemmer
 nltk.download('punkt')
 nltk.download('stopwords')
 nltk.download('wordnet')
+
+def preprocessing(text):
+    # tokenize into words
+    tokens = [word for sent in nltk.sent_tokenize(text)
+              for word in nltk.word_tokenize(sent)]
+
+    # remove stopwords
+    stop = stopwords.words('english')
+    tokens = [token for token in tokens if token not in stop]
+
+    # remove words less than three letters
+    tokens = [word for word in tokens if len(word) >= 3]
+
+    # lower capitalization
+    tokens = [word.lower() for word in tokens]
+
+    # lemmatization
+    lmtzr = WordNetLemmatizer()
+    tokens = [lmtzr.lemmatize(word) for word in tokens]
+
+    tokens = [lmtzr.lemmatize(word, 'v') for word in tokens]
+
+    # stemming
+    stemmer = PorterStemmer()
+    tokens = [stemmer.stem(word) for word in tokens]
+
+    preprocessed_text = ' '.join(tokens)
+    return preprocessed_text
 
 def load_dialogues(filename):
     utterances= []
@@ -18,7 +47,7 @@ def load_dialogues(filename):
         dialogues = json.loads(f.read())
         for dialogue in dialogues:
             for line in dialogue:
-                utterances.append(preprocessing(line['utterance']))
+                utterances.append(clean_str(line['utterance']))
                 labels.append(line['emotion'])
 
     return utterances, labels
@@ -29,7 +58,7 @@ def load_csv_dialogues(filename):
     with open(filename,encoding='CP949') as f:
         reader=csv.reader(f)
         for row in reader:
-            utterances.append(preprocessing(row[4]))
+            utterances.append(clean_str(row[4]))
 
     return utterances[1:]
 
