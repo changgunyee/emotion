@@ -5,7 +5,7 @@
 
 ### 실행방법
 1. NSMC/data 폴더에  ratings_train.txt, ratings_test.txt, ko_data.csv, ko_sample.csv 파일을 다운로드 합니다.
-2. python3 NSMC.py 명령어로 모델 학습 및 예측을 합니다.
+2. python3 NSMC/NSMC.py 명령어로 모델 학습 및 예측을 합니다.
 3. NSMC/data 폴더에 예측 값이 저장된 ko_sample.csv 파일을 열어 첫 행에 Id, Predicted를 입력합니다.
 
 ## KoBERT.py
@@ -15,5 +15,5 @@
 
 ### 실행방법
 1. NSMC/data 폴더에  ratings_train.txt, ratings_test.txt, ko_data_no_index.csv 파일을 다운로드 합니다.
-2. python3 KoBERT.py 명령어로 모델 학습 및 예측을 합니다.
+2. python3 NSMC/KoBERT.py 명령어로 모델 학습 및 예측을 합니다.
 3. 예측 값이 저장된 kobert_out.csv 파일을 열어 첫 행에 Id, Predicted를 입력합니다.
