@@ -10,7 +10,8 @@
 
 ## KoBERT.py
 
-> Pre-trained된 KoBERT를 NSMC로 fine-tuning한 모델의 소스코드 입니다. (참고 : https://github.com/SKTBrain/KoBERT)
+> Pre-trained된 KoBERT를 NSMC로 fine-tuning한 모델의 소스코드 입니다. 
+(참고 : https://github.com/SKTBrain/KoBERT)
 #### *NVIDIA GPU를 사용하고 CUDA 드라이버가 설치된 환경에서 작동하는 코드입니다.
 
 ### 실행방법
